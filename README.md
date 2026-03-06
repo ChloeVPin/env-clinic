@@ -73,7 +73,7 @@ The killer feature is the interactive fix mode. Instead of manual copy-pasting, 
 npx env-clinic --fix
 ```
 
-It will prompt you for each missing variable and append it to your `.env` file safely.
+It will prompt you for each missing variable and append it to your `.env` file safely. If the variable has a default value in your example file, it will be shown as a suggestion — press Enter to accept it.
 
 ---
 
@@ -81,7 +81,8 @@ It will prompt you for each missing variable and append it to your `.env` file s
 
 | Flag | Description | Example |
 |------|-------------|---------|
-| `--fix` | Interactive mode to fill in missing variables. | `npx env-clinic --fix` |
+| `--fix` | Interactive mode to fill in missing variables. Shows example defaults as suggestions. | `npx env-clinic --fix` |
+| `--prune` | Interactive mode to remove EXTRA variables from your `.env`. | `npx env-clinic --prune` |
 | `--ci` | Plain text output for CI/CD pipelines (no colors/emojis). | `npx env-clinic --ci` |
 | `--strict` | Treats empty variables as errors (exits 1). | `npx env-clinic --strict` |
 | `--quiet` | Only shows errors and warnings. | `npx env-clinic --quiet` |

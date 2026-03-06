@@ -1,6 +1,6 @@
 {
   "name": "env-clinic",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Zero-config CLI to find missing, extra, and empty variables in your .env file",
   "type": "module",
   "main": "./src/index.js",
