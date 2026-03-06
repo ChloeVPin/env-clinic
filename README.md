@@ -1,18 +1,31 @@
 <h1 align="center">
-  <img src="assets/env-clinic.png" width="180" alt="env-clinic logo" /><br/>
+  <a href="https://www.npmjs.com/package/env-clinic">
+    <img src="assets/env-clinic.png" width="200" alt="env-clinic logo" />
+  </a>
+  <br>
   env-clinic 🩺
 </h1>
 
 <p align="center">
-  Catch missing <code>.env</code> variables before your app crashes.
+  <strong>Catch missing <code>.env</code> variables before your app crashes.</strong>
 </p>
 
 <p align="center">
-  [![npm version](https://img.shields.io/npm/v/env-clinic)](https://www.npmjs.com/package/env-clinic)
-  [![npm downloads](https://img.shields.io/npm/dw/env-clinic)](https://www.npmjs.com/package/env-clinic)
-  [![License](https://img.shields.io/npm/l/env-clinic)](https://github.com/ChloeVPin/env-clinic/blob/master/LICENSE)
-  [![CI](https://img.shields.io/github/actions/workflow/status/ChloeVPin/env-clinic/ci.yml?branch=master&label=CI)](https://github.com/ChloeVPin/env-clinic/actions)
-  [![Node](https://img.shields.io/node/v/env-clinic)](https://www.npmjs.com/package/env-clinic)
+  <a href="https://www.npmjs.com/package/env-clinic">
+    <img src="https://img.shields.io/npm/v/env-clinic?color=blue" alt="npm version" />
+  </a>
+  <a href="https://www.npmjs.com/package/env-clinic">
+    <img src="https://img.shields.io/npm/dw/env-clinic?color=brightgreen" alt="downloads" />
+  </a>
+  <a href="https://github.com/ChloeVPin/env-clinic/blob/master/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license" />
+  </a>
+  <a href="https://github.com/ChloeVPin/env-clinic/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/ChloeVPin/env-clinic/ci.yml?branch=master&label=CI" alt="CI" />
+  </a>
+  <a href="https://www.npmjs.com/package/env-clinic">
+    <img src="https://img.shields.io/badge/node-%3E%3D16-brightgreen.svg" alt="node version" />
+  </a>
 </p>
 
 ---
