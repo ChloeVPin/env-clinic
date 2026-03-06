@@ -1,16 +1,19 @@
-<div align="center">
-  <img src="assets/env-clinic.png" width="180" alt="env-clinic logo" />
+<h1 align="center">
+  <img src="assets/env-clinic.png" width="180" alt="env-clinic logo" /><br/>
+  env-clinic 🩺
+</h1>
 
-  # env-clinic 🩺
+<p align="center">
+  Catch missing <code>.env</code> variables before your app crashes.
+</p>
 
-  Catch missing `.env` variables before your app crashes.
-
+<p align="center">
   [![npm version](https://img.shields.io/npm/v/env-clinic)](https://www.npmjs.com/package/env-clinic)
   [![npm downloads](https://img.shields.io/npm/dw/env-clinic)](https://www.npmjs.com/package/env-clinic)
   [![License](https://img.shields.io/npm/l/env-clinic)](https://github.com/ChloeVPin/env-clinic/blob/master/LICENSE)
   [![CI](https://img.shields.io/github/actions/workflow/status/ChloeVPin/env-clinic/ci.yml?branch=master&label=CI)](https://github.com/ChloeVPin/env-clinic/actions)
   [![Node](https://img.shields.io/node/v/env-clinic)](https://www.npmjs.com/package/env-clinic)
-</div>
+</p>
 
 ---
 
