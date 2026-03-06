@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="./assets/env-doctor.svg" alt="env-doctor logo" width="160" />
+</div>
+
 # env-doctor 🩺
 
 Catch missing `.env` variables before your app crashes.
