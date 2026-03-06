@@ -8,7 +8,7 @@
   [![npm version](https://img.shields.io/npm/v/env-clinic)](https://www.npmjs.com/package/env-clinic)
   [![npm downloads](https://img.shields.io/npm/dw/env-clinic)](https://www.npmjs.com/package/env-clinic)
   [![License](https://img.shields.io/npm/l/env-clinic)](https://github.com/ChloeVPin/env-clinic/blob/master/LICENSE)
-  [![CI](https://github.com/ChloeVPin/env-clinic/actions/workflows/ci.yml/badge.svg)](https://github.com/ChloeVPin/env-clinic/actions)
+  [![CI](https://img.shields.io/github/actions/workflow/status/ChloeVPin/env-clinic/ci.yml?branch=master&label=CI)](https://github.com/ChloeVPin/env-clinic/actions)
   [![Node](https://img.shields.io/node/v/env-clinic)](https://www.npmjs.com/package/env-clinic)
 </div>
 
