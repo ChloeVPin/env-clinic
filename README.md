@@ -1,16 +1,16 @@
-<p align="center">
-  <img src="assets/env-clinic.png" width="120" alt="env-clinic logo" />
-</p>
+<div align="center">
+  <img src="assets/env-clinic.png" width="180" alt="env-clinic logo" />
 
-# env-clinic 🩺
+  # env-clinic 🩺
 
-Catch missing `.env` variables before your app crashes.
+  Catch missing `.env` variables before your app crashes.
 
-[![npm version](https://img.shields.io/npm/v/env-clinic)](https://www.npmjs.com/package/env-clinic)
-[![npm downloads](https://img.shields.io/npm/dw/env-clinic)](https://www.npmjs.com/package/env-clinic)
-[![License](https://img.shields.io/npm/l/env-clinic)](https://github.com/ChloeVPin/env-clinic/blob/master/LICENSE)
-[![CI](https://github.com/ChloeVPin/env-clinic/actions/workflows/ci.yml/badge.svg)](https://github.com/ChloeVPin/env-clinic/actions)
-[![Node](https://img.shields.io/node/v/env-clinic)](https://www.npmjs.com/package/env-clinic)
+  [![npm version](https://img.shields.io/npm/v/env-clinic)](https://www.npmjs.com/package/env-clinic)
+  [![npm downloads](https://img.shields.io/npm/dw/env-clinic)](https://www.npmjs.com/package/env-clinic)
+  [![License](https://img.shields.io/npm/l/env-clinic)](https://github.com/ChloeVPin/env-clinic/blob/master/LICENSE)
+  [![CI](https://github.com/ChloeVPin/env-clinic/actions/workflows/ci.yml/badge.svg)](https://github.com/ChloeVPin/env-clinic/actions)
+  [![Node](https://img.shields.io/node/v/env-clinic)](https://www.npmjs.com/package/env-clinic)
+</div>
 
 ---
 
