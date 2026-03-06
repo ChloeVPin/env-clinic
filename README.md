@@ -1,17 +1,17 @@
 <div align="center">
   <img src="./assets/env-doctor.svg" alt="env-doctor logo" width="160" />
+
+  # env-doctor 🩺
+
+  Catch missing `.env` variables before your app crashes.
+
+  [![npm version](https://img.shields.io/npm/v/env-doctor.svg?style=flat-square&color=blue)](https://www.npmjs.com/package/env-doctor)
+  [![tests](https://img.shields.io/github/actions/workflow/status/ChloeVPin/env-doctor/ci.yml?branch=main&style=flat-square&label=tests)](https://github.com/ChloeVPin/env-doctor/actions)
+
+  Every backend project has a `.env` file and a `.env.example` file. Every time you pull new code or a teammate adds a new secret, you risk a silent crash because a variable is missing.
+
+  `env-doctor` is a zero-config CLI that diffs these files for you instantly.
 </div>
-
-# env-doctor 🩺
-
-Catch missing `.env` variables before your app crashes.
-
-[![npm version](https://img.shields.io/npm/v/env-doctor.svg?style=flat-square&color=blue)](https://www.npmjs.com/package/env-doctor)
-[![tests](https://img.shields.io/github/actions/workflow/status/ChloeVPin/env-doctor/ci.yml?branch=main&style=flat-square&label=tests)](https://github.com/ChloeVPin/env-doctor/actions)
-
-Every backend project has a `.env` file and a `.env.example` file. Every time you pull new code or a teammate adds a new secret, you risk a silent crash because a variable is missing.
-
-`env-doctor` is a zero-config CLI that diffs these files for you instantly.
 
 ---
 
