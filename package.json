@@ -24,14 +24,18 @@
   "engines": {
     "node": ">=16"
   },
-  "author": "",
+  "author": "ChloeVPin <xtratweaks@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChloeVPin/env-doctor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ChloeVPin/env-doctor/issues"
+  },
+  "homepage": "https://github.com/ChloeVPin/env-doctor#readme",
   "dependencies": {
     "chalk": "^5.6.2",
     "commander": "^14.0.3"
-  },
-  "devDependencies": {
-    "@jest/globals": "^30.2.0",
-    "jest": "^30.2.0"
   }
 }
