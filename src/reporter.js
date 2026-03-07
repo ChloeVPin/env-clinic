@@ -9,6 +9,8 @@ import chalk from 'chalk';
  * @param {boolean} [options.quiet]  - Only show errors/warnings
  * @param {boolean} [options.json]   - Output JSON instead
  * @param {boolean} [options.strict] - Treat empty vars as errors
+ * @param {boolean} [options.fix]    - Was --fix already passed? Suppresses the --fix tip.
+ * @param {boolean} [options.prune]  - Was --prune already passed? Suppresses the --prune tip.
  */
 export function printReport(result, options = {}) {
     const { present, missing, extra, empty, passed } = result;
@@ -95,6 +97,18 @@ export function printReport(result, options = {}) {
     if (missing.length === 0 && extra.length === 0 && empty.length === 0) {
         const icon = options.ci ? '[PASS]' : c.green('✅');
         console.log(`  ${icon} All variables match — your .env is healthy!`);
+    }
+
+    // Actionable tips — only in human-readable, non-CI, non-JSON output.
+    // Suppressed if the relevant flag is already active (no point suggesting what is running).
+    if (!options.ci && !options.json) {
+        if (missing.length > 0 && !options.fix) {
+            console.log(c.cyan(`
+  💡 Tip: run with --fix to fill these in interactively.`));
+        }
+        if (extra.length > 0 && !options.prune) {
+            console.log(c.cyan(`  💡 Tip: run with --prune to remove extra variables interactively.`));
+        }
     }
 
     console.log('');
