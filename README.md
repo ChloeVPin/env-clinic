@@ -61,13 +61,21 @@ It automatically finds your `.env` and looks for an `.env.example` (or `.sample`
   ❌ STRIPE_SECRET_KEY   — MISSING (in example but not in .env)
   ⚠️  OLD_REDIS_URL      — EXTRA (in .env but not in example)
   ⚠️  DEBUG_MODE         — EMPTY (present but has no value)
+
+  💡 Tip: run with --fix to fill these in interactively.
 ```
 
 ---
 
-## 🛠️ The Fix Mode (`--fix`)
+### 🪄 Auto-Prompt (v1.2.0+)
 
-The killer feature is the interactive fix mode. Instead of manual copy-pasting, `env-clinic` help you fill in the blanks.
+You don't even need to remember the flags. In an interactive terminal, `env-clinic` will automatically ask if you want to fix or prune variables on the spot:
+
+`❓ Would you like to fill in missing variables now? [y/N]`
+
+### 🛠️ Manual Mode
+
+You can also trigger flags manually:
 
 ```bash
 npx env-clinic --fix
