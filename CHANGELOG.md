@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-03-22
+
+### Changed
+- Clarified `--strict` and auto-prompt wording in the CLI help so empty values like `EMPTY=` are easier to understand.
+- Added a CLI smoke test for strict mode to keep the public behavior locked down.
+- Updated the README to call out Node 20+ support and the empty-value behavior explicitly.
+
 ## [1.2.0] - 2026-03-07
 
 ### Added

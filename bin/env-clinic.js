@@ -24,10 +24,10 @@ program
     .version(pkg.version, '-v, --version')
     .option('--file <path>', 'Path to the .env file (default: .env)')
     .option('--example <path>', 'Path to the reference file (default: auto-detect)')
-    .option('--fix', 'Interactive mode — prompt to fill in missing variables')
-    .option('--prune', 'Interactive mode — remove EXTRA variables from your .env')
+    .option('--fix', 'Interactive mode — prompt to fill in missing variables (or auto-prompt in a terminal)')
+    .option('--prune', 'Interactive mode — remove EXTRA variables from your .env (or auto-prompt in a terminal)')
     .option('--ci', 'Non-interactive CI mode — plain text, no colors')
-    .option('--strict', 'Treat empty variables as errors')
+    .option('--strict', 'Treat empty variables (for example EMPTY=) as errors')
     .option('--quiet', 'Only show errors and warnings')
     .option('--json', 'Output results as JSON')
     .action(async (options) => {

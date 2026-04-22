@@ -24,7 +24,7 @@
     <img src="https://img.shields.io/github/actions/workflow/status/ChloeVPin/env-clinic/ci.yml?branch=master&label=CI" alt="CI" />
   </a>
   <a href="https://www.npmjs.com/package/env-clinic">
-    <img src="https://img.shields.io/badge/node-%3E%3D16-brightgreen.svg" alt="node version" />
+    <img src="https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg" alt="node version" />
   </a>
 </p>
 
@@ -49,6 +49,10 @@ npx env-clinic
 ```
 
 It automatically finds your `.env` and looks for an `.env.example` (or `.sample`, `.template`) to compare against.
+
+> Requires Node.js 20 or newer.
+
+Empty values like `EMPTY=` are reported separately. Use `--strict` if you want those to fail the check.
 
 ---
 
