@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { Command } from 'commander';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
@@ -11,114 +10,138 @@ import { printReport } from '../src/reporter.js';
 import { fixMissing, pruneExtra } from '../src/fixer.js';
 import { isInteractive } from '../src/tty.js';
 
-// Read version from package.json
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const pkg = JSON.parse(readFileSync(resolve(__dirname, '..', 'package.json'), 'utf-8'));
 
-const program = new Command();
+export async function run(options = {}) {
+    try {
+        validateWriteOptions(options);
 
-program
-    .name('env-clinic')
-    .description('Zero-config CLI to find missing, extra, and empty variables in your .env file')
-    .version(pkg.version, '-v, --version')
-    .option('--file <path>', 'Path to the .env file (default: .env)')
-    .option('--example <path>', 'Path to the reference file (default: auto-detect)')
-    .option('--fix', 'Interactive mode — prompt to fill in missing variables (or auto-prompt in a terminal)')
-    .option('--prune', 'Interactive mode — remove EXTRA variables from your .env (or auto-prompt in a terminal)')
-    .option('--ci', 'Non-interactive CI mode — plain text, no colors')
-    .option('--strict', 'Treat empty variables (for example EMPTY=) as errors')
-    .option('--quiet', 'Only show errors and warnings')
-    .option('--json', 'Output results as JSON')
-    .action(async (options) => {
-        try {
-            // 1. Find files
-            const { envPath, examplePath } = findEnvFiles({
-                envPath: options.file,
-                examplePath: options.example,
-            });
+        const { envPath, examplePath } = findEnvFiles({
+            envPath: options.file,
+            examplePath: options.example,
+        });
 
-            // 2. Parse both files
-            const env = parseEnvFile(envPath);
-            const example = parseEnvFile(examplePath);
+        const env = parseEnvFile(envPath);
+        const example = parseEnvFile(examplePath);
+        const result = compareEnvs(env.keys, example.keys);
 
-            // 3. Compare
-            const result = compareEnvs(env.keys, example.keys);
+        printReport(result, {
+            ci: options.ci,
+            quiet: options.quiet,
+            json: options.json,
+            strict: options.strict,
+            fix: options.fix,
+            prune: options.prune,
+        });
 
-            // 4. Report
-            printReport(result, {
-                ci: options.ci,
-                quiet: options.quiet,
-                json: options.json,
-                strict: options.strict,
-                fix: options.fix,
-                prune: options.prune,
-            });
+        const shouldFix = options.fix ||
+            (
+                !options.ci &&
+                !options.json &&
+                isInteractive() &&
+                result.missing.length > 0 &&
+                await confirmAction('  Would you like to fill in missing variables now? [y/N] ')
+            );
 
-            // 5. Fix mode — explicit flag OR auto-prompt in interactive terminal.
-            //    SECURITY: gated by both --ci flag and process.stdout.isTTY.
-            //    Default answer is N — no file is ever modified without explicit 'y'.
-            const shouldFix = options.fix ||
-                (
-                    !options.ci &&
-                    !options.json &&
-                    isInteractive() &&
-                    result.missing.length > 0 &&
-                    await confirmAction('  ❓ Would you like to fill in missing variables now? [y/N] ')
-                );
-
-            if (shouldFix && result.missing.length > 0) {
-                await fixMissing(result.missing, envPath, example.keys);
-            }
-
-            // 6. Prune mode — explicit flag OR auto-prompt in interactive terminal.
-            //    Same double-gate as above.
-            const shouldPrune = options.prune ||
-                (
-                    !options.ci &&
-                    !options.json &&
-                    isInteractive() &&
-                    result.extra.length > 0 &&
-                    await confirmAction('  ❓ Would you like to remove extra variables now? [y/N] ')
-                );
-
-            if (shouldPrune && result.extra.length > 0) {
-                await pruneExtra(result.extra, envPath);
-            }
-
-            // 7. Exit code
-            const hasErrors = result.missing.length > 0;
-            const strictErrors = options.strict && result.empty.length > 0;
-
-            if (hasErrors || strictErrors) {
-                process.exit(1);
-            }
-        } catch (err) {
-            if (!options.json) {
-                console.error('');
-                console.error(`  🩺 env-clinic error:`);
-                console.error(`  ${err.message}`);
-                console.error('');
-            } else {
-                console.error(JSON.stringify({ error: err.message }, null, 2));
-            }
-            process.exit(1);
+        if (shouldFix && result.missing.length > 0) {
+            await fixMissing(result.missing, envPath, example.keys);
         }
-    });
 
-program.parse();
+        const shouldPrune = options.prune ||
+            (
+                !options.ci &&
+                !options.json &&
+                isInteractive() &&
+                result.extra.length > 0 &&
+                await confirmAction('  Would you like to remove extra variables now? [y/N] ')
+            );
 
-/**
- * Prompts a single [y/N] confirmation question on stdin.
- * Returns true only if the user explicitly types 'y' or 'Y'.
- * The default (pressing Enter with no input) is No — safe by design.
- *
- * SECURITY: This helper is only ever called after checking isInteractive()
- * and confirming the relevant flag (--ci, --json) is not set.
- *
- * @param {string} question
- * @returns {Promise<boolean>}
- */
+        if (shouldPrune && result.extra.length > 0) {
+            await pruneExtra(result.extra, envPath);
+        }
+
+        const hasErrors = result.missing.length > 0;
+        const strictErrors = options.strict && result.empty.length > 0;
+
+        return hasErrors || strictErrors ? 1 : 0;
+    } catch (err) {
+        if (!options.json) {
+            console.error('');
+            console.error('  env-clinic error:');
+            console.error(`  ${err.message}`);
+            console.error('');
+        } else {
+            console.error(JSON.stringify({ error: err.message }, null, 2));
+        }
+        return 1;
+    }
+}
+
+export function parseArgs(argv) {
+    const options = {};
+
+    for (let i = 0; i < argv.length; i += 1) {
+        const arg = argv[i];
+
+        if (arg === '-v' || arg === '--version') {
+            return { earlyExitCode: 0, output: pkg.version };
+        }
+
+        if (arg === '-h' || arg === '--help') {
+            return { earlyExitCode: 0, output: helpText() };
+        }
+
+        if (arg === '--file' || arg === '--example') {
+            const value = argv[i + 1];
+            if (!value || value.startsWith('--')) {
+                throw new Error(`${arg} requires a path.`);
+            }
+            options[arg.slice(2)] = value;
+            i += 1;
+            continue;
+        }
+
+        if (arg.startsWith('--file=')) {
+            options.file = arg.slice('--file='.length);
+            continue;
+        }
+
+        if (arg.startsWith('--example=')) {
+            options.example = arg.slice('--example='.length);
+            continue;
+        }
+
+        if (['--fix', '--prune', '--ci', '--strict', '--quiet', '--json'].includes(arg)) {
+            options[arg.slice(2)] = true;
+            continue;
+        }
+
+        throw new Error(`Unknown option: ${arg}`);
+    }
+
+    return { options };
+}
+
+function validateWriteOptions(options) {
+    if (!options.fix && !options.prune) {
+        return;
+    }
+
+    if (options.ci) {
+        throw new Error('--fix and --prune cannot be used with --ci.');
+    }
+
+    if (options.json) {
+        throw new Error('--fix and --prune cannot be used with --json.');
+    }
+
+    if (!isInteractive()) {
+        throw new Error('--fix and --prune require an interactive terminal.');
+    }
+}
+
 async function confirmAction(question) {
     const { createInterface } = await import('node:readline');
     const rl = createInterface({ input: process.stdin, output: process.stdout });
@@ -128,4 +151,45 @@ async function confirmAction(question) {
             resolve(answer.trim().toLowerCase() === 'y');
         });
     });
+}
+
+function helpText() {
+    return [
+        'Usage: env-clinic [options]',
+        '',
+        'Zero-config CLI to find missing, extra, and empty variables in your .env file',
+        '',
+        'Options:',
+        '  --file <path>      Path to the .env file (default: .env)',
+        '  --example <path>   Path to the reference file (default: auto-detect)',
+        '  --fix              Fill in missing variables interactively',
+        '  --prune            Remove extra variables interactively',
+        '  --ci               Non-interactive CI mode with plain text and no colors',
+        '  --strict           Treat empty variables as errors',
+        '  --quiet            Only show errors and warnings',
+        '  --json             Output results as JSON',
+        '  -v, --version      Show version number',
+        '  -h, --help         Show help information',
+    ].join('\n');
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === __filename) {
+    try {
+        const parsed = parseArgs(process.argv.slice(2));
+        if (parsed.output) {
+            console.log(parsed.output);
+            process.exit(parsed.earlyExitCode);
+        }
+
+        const code = await run(parsed.options);
+        if (code !== 0) {
+            process.exit(code);
+        }
+    } catch (err) {
+        console.error('');
+        console.error('  env-clinic error:');
+        console.error(`  ${err.message}`);
+        console.error('');
+        process.exit(1);
+    }
 }

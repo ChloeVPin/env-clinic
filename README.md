@@ -1,9 +1,9 @@
 <h1 align="center">
   <a href="https://www.npmjs.com/package/env-clinic">
-    <img src="assets/env-clinic.png" width="200" alt="env-clinic logo" />
+    <img src="https://raw.githubusercontent.com/ChloeVPin/env-clinic/master/assets/env-clinic.png" width="200" alt="env-clinic logo" />
   </a>
   <br>
-  env-clinic 🩺
+  env-clinic
 </h1>
 
 <p align="center">
@@ -30,74 +30,65 @@
 
 ---
 
-## Why env-clinic?
+## Why
 
-You clone a repo. You run `npm install`. You run `npm start`. It crashes. 
+`env-clinic` compares your `.env` file with `.env.example`, `.env.sample`, or `.env.template` and reports missing, extra, and empty variables.
 
-Three environment variables are missing from your `.env` file but present in `.env.example`. You spend five minutes debugging a silent failure that should have been obvious. 
-
-`env-clinic` catches this in one second. It's a zero-config CLI that diffs your environment files instantly, so you can stop guessing and start coding.
+It is zero config and meant to stay small.
 
 ---
 
-## 🚀 Usage
+## Usage
 
-No install required. Just run it in your project root:
+Run it in your project root:
 
 ```bash
 npx env-clinic
 ```
 
-It automatically finds your `.env` and looks for an `.env.example` (or `.sample`, `.template`) to compare against.
+It automatically checks `.env` against the first reference file it can find.
 
-> Requires Node.js 20 or newer.
-
-Empty values like `EMPTY=` are reported separately. Use `--strict` if you want those to fail the check.
+Requires Node.js 20 or newer.
 
 ---
 
-## ✨ Output Example
-
-`env-clinic` checks your `.env` for completeness and gives you a clear report:
+## Output
 
 ```text
-  ✅ DATABASE_URL        — present
-  ❌ STRIPE_SECRET_KEY   — MISSING (in example but not in .env)
-  ⚠️  OLD_REDIS_URL      — EXTRA (in .env but not in example)
-  ⚠️  DEBUG_MODE         — EMPTY (present but has no value)
+  [PASS] DATABASE_URL        - present
+  [FAIL] STRIPE_SECRET_KEY   - MISSING (in example but not in .env)
+  [WARN] OLD_REDIS_URL       - EXTRA (in .env but not in example)
+  [WARN] DEBUG_MODE          - EMPTY (present but has no value)
 
-  💡 Tip: run with --fix to fill these in interactively.
+  Tip: run with --fix to fill these in interactively.
 ```
 
 ---
 
-### 🪄 Auto-Prompt (v1.2.0+)
+## Fix and prune
 
-You don't even need to remember the flags. In an interactive terminal, `env-clinic` will automatically ask if you want to fix or prune variables on the spot:
+In an interactive terminal, `env-clinic` can ask if you want to fix missing variables or prune extras after the report.
 
-`❓ Would you like to fill in missing variables now? [y/N]`
-
-### 🛠️ Manual Mode
-
-You can also trigger flags manually:
+You can also run the write modes directly:
 
 ```bash
 npx env-clinic --fix
+npx env-clinic --prune
 ```
 
-It will prompt you for each missing variable and append it to your `.env` file safely. If the variable has a default value in your example file, it will be shown as a suggestion — press Enter to accept it.
+Write modes are interactive only. They are rejected with `--ci`, `--json`, or non-interactive output.
 
 ---
 
-## ⚙️ Options
+## Options
 
 | Flag | Description | Example |
 |------|-------------|---------|
-| `--fix` | Interactive mode to fill in missing variables. Shows example defaults as suggestions. | `npx env-clinic --fix` |
-| `--prune` | Interactive mode to remove EXTRA variables from your `.env`. | `npx env-clinic --prune` |
-| `--ci` | Plain text output for CI/CD pipelines (no colors/emojis). | `npx env-clinic --ci` |
-| `--strict` | Treats empty variables as errors (exits 1). | `npx env-clinic --strict` |
-| `--quiet` | Only shows errors and warnings. | `npx env-clinic --quiet` |
+| `--fix` | Fill in missing variables interactively. Shows example defaults as suggestions. | `npx env-clinic --fix` |
+| `--prune` | Remove extra variables interactively. | `npx env-clinic --prune` |
+| `--ci` | Plain text output for CI/CD pipelines. | `npx env-clinic --ci` |
+| `--strict` | Treat empty variables as errors. | `npx env-clinic --strict` |
+| `--quiet` | Only show errors, warnings, and summary. | `npx env-clinic --quiet` |
 | `--file` | Custom path to your `.env` file. | `npx env-clinic --file .env.prod` |
 | `--example` | Custom path to your reference file. | `npx env-clinic --example .env.sample` |
 | `--json` | Output results as JSON for automation. | `npx env-clinic --json` |
@@ -106,36 +97,36 @@ It will prompt you for each missing variable and append it to your `.env` file s
 
 ---
 
-## 🛡️ CI/CD
+## CI/CD
 
-Stop broken deployments. Add this to your CI workflow (e.g., GitHub Actions) to ensure all required secrets are present:
+Add this to CI to fail when required variables are missing:
 
 ```yaml
 - name: Check environment variables
   run: npx env-clinic --ci
 ```
 
-`env-clinic` exits with `0` on match and `1` if anything is missing.
+`env-clinic` exits with `0` on match and `1` if required variables are missing. With `--strict`, empty variables also exit with `1`.
 
 ---
 
-## 🔒 Security
+## Security
 
-**env-clinic reads only the KEYS from your .env file.** It never reads, prints, logs, or transmits your actual secret values. Your secrets stay on your machine.
+`env-clinic` reads local `.env` content so it can compare keys and detect empty values. It does not print, log, transmit, or store your secret values.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-This is a tiny, focused tool built to solve one specific pain point. If you have a bug fix or a small improvement, feel free to open a PR!
+This is a tiny, focused tool. Bug fixes and small improvements are welcome.
 
-- **Found a bug?** [Open an issue](https://github.com/ChloeVPin/env-clinic/issues)
-- **Local Dev:** `npm install` and `npm test`
-- **PRs:** Friendly pull requests are always welcome!
+- Found a bug? [Open an issue](https://github.com/ChloeVPin/env-clinic/issues)
+- Local dev: `npm install` and `npm test`
+- PRs: keep changes small and focused
 
 - [Contributing Guide](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)
 
 ---
 
-MIT License © 2026 ChloeVPin
+MIT License (c) 2026 ChloeVPin

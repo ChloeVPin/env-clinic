@@ -1,6 +1,6 @@
 {
   "name": "env-clinic",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Zero-config CLI to find missing, extra, and empty variables in your .env file",
   "type": "module",
   "bin": {
@@ -9,13 +9,12 @@
   "files": [
     "bin",
     "src",
-    "assets",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "test": "node --test test/*.test.js"
+    "test": "node --test --test-isolation=none test/*.test.js"
   },
   "keywords": [
     "cli",
@@ -43,9 +42,5 @@
   "bugs": {
     "url": "https://github.com/ChloeVPin/env-clinic/issues"
   },
-  "homepage": "https://github.com/ChloeVPin/env-clinic#readme",
-  "dependencies": {
-    "chalk": "^5.6.2",
-    "commander": "^14.0.3"
-  }
+  "homepage": "https://github.com/ChloeVPin/env-clinic#readme"
 }

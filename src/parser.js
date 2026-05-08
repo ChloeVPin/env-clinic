@@ -1,13 +1,14 @@
 import { readFileSync } from 'node:fs';
 
 /**
- * Parse a .env file into a Map of key → value entries.
+ * Parse a .env file into a Map of key/value entries.
  * Handles:
- *  - Comments (lines starting with #)
+ *  - Comments
  *  - Blank lines
- *  - Quoted values (single and double quotes)
+ *  - Quoted values
  *  - Values containing = signs
- *  - Keys with empty values (KEY= or KEY)
+ *  - Keys with empty values
+ *  - Optional export prefix
  *  - CRLF line endings
  *
  * @param {string} filePath - Absolute or relative path to the .env file
@@ -19,7 +20,7 @@ export function parseEnvFile(filePath) {
 }
 
 /**
- * Parse raw .env content string into a Map of key → value entries.
+ * Parse raw .env content string into a Map of key/value entries.
  *
  * @param {string} content - Raw file content
  * @returns {{ keys: Map<string, string>, order: string[] }}
@@ -28,25 +29,25 @@ export function parseEnvContent(content) {
   const keys = new Map();
   const order = [];
 
-  // Normalize line endings (CRLF → LF)
   const lines = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
 
   for (const rawLine of lines) {
-    const line = rawLine.trim();
+    let line = rawLine.trim();
 
-    // Skip empty lines and comments
     if (line === '' || line.startsWith('#')) {
       continue;
     }
 
-    // Find the first = sign
+    if (line.startsWith('export ')) {
+      line = line.slice('export '.length).trimStart();
+    }
+
     const eqIndex = line.indexOf('=');
 
     let key;
     let value;
 
     if (eqIndex === -1) {
-      // No = sign: treat the whole line as a key with empty value
       key = line.trim();
       value = '';
     } else {
@@ -54,12 +55,10 @@ export function parseEnvContent(content) {
       value = line.slice(eqIndex + 1).trim();
     }
 
-    // Skip lines where the key is empty
     if (key === '') {
       continue;
     }
 
-    // Strip surrounding quotes from value
     if (
       (value.startsWith('"') && value.endsWith('"')) ||
       (value.startsWith("'") && value.endsWith("'"))

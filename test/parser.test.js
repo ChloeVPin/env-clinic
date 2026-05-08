@@ -82,6 +82,15 @@ describe('parseEnvContent', () => {
         assert.equal(keys.get('KEY'), 'value');
     });
 
+    test('handles export-prefixed keys', () => {
+        const content = 'export DATABASE_URL=postgres://localhost/db\nexport EMPTY=';
+        const { keys, order } = parseEnvContent(content);
+
+        assert.equal(keys.get('DATABASE_URL'), 'postgres://localhost/db');
+        assert.equal(keys.get('EMPTY'), '');
+        assert.deepEqual(order, ['DATABASE_URL', 'EMPTY']);
+    });
+
     test('preserves order of keys', () => {
         const content = 'Z_KEY=1\nA_KEY=2\nM_KEY=3';
         const { order } = parseEnvContent(content);

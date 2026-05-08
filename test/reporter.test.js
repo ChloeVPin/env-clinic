@@ -2,9 +2,6 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { printReport } from '../src/reporter.js';
 
-/**
- * Capture stdout output produced by a synchronous callback.
- */
 function captureOutput(fn) {
     const lines = [];
     const originalLog = console.log;
@@ -17,10 +14,8 @@ function captureOutput(fn) {
     return lines.join('\n');
 }
 
-// ─── Baseline: existing behaviour unchanged ─────────────────────────────────
-
-describe('printReport — existing behaviour (unchanged)', () => {
-    test('JSON output: no tip lines included', () => {
+describe('printReport existing behavior', () => {
+    test('JSON output has no tip lines', () => {
         const result = {
             present: [],
             missing: ['DB_URL'],
@@ -29,21 +24,12 @@ describe('printReport — existing behaviour (unchanged)', () => {
             passed: false,
         };
 
-        const lines = [];
-        const origLog = console.log;
-        console.log = (str) => lines.push(str);
-        try {
-            printReport(result, { json: true });
-        } finally {
-            console.log = origLog;
-        }
-
-        const output = lines.join('\n');
-        assert.ok(!output.includes('💡'), 'JSON output must contain no tip lines');
+        const output = captureOutput(() => printReport(result, { json: true }));
+        assert.ok(!output.includes('Tip:'), 'JSON output must contain no tip lines');
         assert.ok(!output.includes('--fix'), 'JSON output must not mention --fix');
     });
 
-    test('healthy env: shows healthy message, no tips', () => {
+    test('healthy env shows healthy message and no tips', () => {
         const result = {
             present: ['DB_URL', 'PORT'],
             missing: [],
@@ -55,14 +41,12 @@ describe('printReport — existing behaviour (unchanged)', () => {
         const output = captureOutput(() => printReport(result, {}));
 
         assert.ok(output.includes('healthy'), 'healthy message should be shown');
-        assert.ok(!output.includes('💡'), 'no tips when everything is fine');
+        assert.ok(!output.includes('Tip:'), 'no tips when everything is fine');
     });
 });
 
-// ─── New behaviour: tip lines ────────────────────────────────────────────────
-
-describe('printReport — actionable tip lines', () => {
-    test('shows --fix tip when there are missing vars and --fix was NOT passed', () => {
+describe('printReport actionable tip lines', () => {
+    test('shows --fix tip when there are missing vars and --fix was not passed', () => {
         const result = {
             present: [],
             missing: ['SECRET_KEY'],
@@ -74,7 +58,7 @@ describe('printReport — actionable tip lines', () => {
         const output = captureOutput(() => printReport(result, { fix: false }));
 
         assert.ok(output.includes('--fix'), 'should suggest --fix when vars are missing');
-        assert.ok(output.includes('💡'), 'should include the tip emoji');
+        assert.ok(output.includes('Tip:'), 'should include a tip label');
     });
 
     test('suppresses --fix tip when --fix flag is already active', () => {
@@ -91,7 +75,7 @@ describe('printReport — actionable tip lines', () => {
         assert.ok(!output.includes('--fix'), 'tip must be suppressed when --fix is already set');
     });
 
-    test('shows --prune tip when there are extra vars and --prune was NOT passed', () => {
+    test('shows --prune tip when there are extra vars and --prune was not passed', () => {
         const result = {
             present: ['DB_URL'],
             missing: [],
@@ -103,7 +87,7 @@ describe('printReport — actionable tip lines', () => {
         const output = captureOutput(() => printReport(result, { prune: false }));
 
         assert.ok(output.includes('--prune'), 'should suggest --prune when extra vars exist');
-        assert.ok(output.includes('💡'), 'should include the tip emoji');
+        assert.ok(output.includes('Tip:'), 'should include a tip label');
     });
 
     test('suppresses --prune tip when --prune flag is already active', () => {
@@ -136,10 +120,8 @@ describe('printReport — actionable tip lines', () => {
     });
 });
 
-// ─── CI / JSON suppression (safety) ─────────────────────────────────────────
-
-describe('printReport — tips suppressed in non-interactive modes', () => {
-    test('CI mode: no tip lines even when vars are missing', () => {
+describe('printReport tip suppression', () => {
+    test('CI mode has no tip lines even when vars are missing', () => {
         const result = {
             present: [],
             missing: ['SECRET_KEY'],
@@ -150,12 +132,12 @@ describe('printReport — tips suppressed in non-interactive modes', () => {
 
         const output = captureOutput(() => printReport(result, { ci: true }));
 
-        assert.ok(!output.includes('💡'), 'CI mode must suppress tip lines');
+        assert.ok(!output.includes('Tip:'), 'CI mode must suppress tip lines');
         assert.ok(!output.includes('--fix'), 'CI mode must suppress --fix tip');
         assert.ok(!output.includes('--prune'), 'CI mode must suppress --prune tip');
     });
 
-    test('JSON mode: no tip lines even when vars are missing', () => {
+    test('JSON mode has no tip lines even when vars are missing', () => {
         const result = {
             present: [],
             missing: ['SECRET_KEY'],
@@ -164,22 +146,14 @@ describe('printReport — tips suppressed in non-interactive modes', () => {
             passed: false,
         };
 
-        const lines = [];
-        const origLog = console.log;
-        console.log = (str) => lines.push(str);
-        try {
-            printReport(result, { json: true });
-        } finally {
-            console.log = origLog;
-        }
+        const output = captureOutput(() => printReport(result, { json: true }));
 
-        const output = lines.join('\n');
-        assert.ok(!output.includes('💡'), 'JSON mode must suppress tip lines');
+        assert.ok(!output.includes('Tip:'), 'JSON mode must suppress tip lines');
         assert.ok(!output.includes('--fix'), 'JSON mode must suppress --fix tip');
         assert.ok(!output.includes('--prune'), 'JSON mode must suppress --prune tip');
     });
 
-    test('quiet mode: tips still shown (quiet only hides PASS lines, not tips)', () => {
+    test('quiet mode suppresses tips', () => {
         const result = {
             present: ['DB_URL'],
             missing: ['SECRET_KEY'],
@@ -190,6 +164,7 @@ describe('printReport — tips suppressed in non-interactive modes', () => {
 
         const output = captureOutput(() => printReport(result, { quiet: true }));
 
-        assert.ok(output.includes('--fix'), '--fix tip should still appear in quiet mode');
+        assert.ok(!output.includes('--fix'), '--fix tip should be hidden in quiet mode');
+        assert.ok(!output.includes('Tip:'), 'quiet mode should suppress tip labels');
     });
 });
