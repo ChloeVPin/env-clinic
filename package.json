@@ -1,7 +1,7 @@
 {
   "name": "env-clinic",
   "version": "1.4.0",
-  "description": "Zero-config CLI to find missing, extra, and empty variables in your .env file",
+  "description": "Catch missing .env variables before your app crashes",
   "type": "module",
   "bin": {
     "env-clinic": "bin/env-clinic.js"

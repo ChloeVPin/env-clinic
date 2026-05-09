@@ -1,9 +1,5 @@
 <h1 align="center">
-  <a href="https://www.npmjs.com/package/env-clinic">
-    <img src="https://raw.githubusercontent.com/ChloeVPin/env-clinic/master/assets/env-clinic.png" width="200" alt="env-clinic logo" />
-  </a>
-  <br>
-  env-clinic
+  <img src="assets/banner.png" alt="env-clinic banner" />
 </h1>
 
 <p align="center">
