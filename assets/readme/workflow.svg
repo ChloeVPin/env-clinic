@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="180" viewBox="0 0 1200 180" role="img" aria-labelledby="wf-title wf-desc">
+  <title id="wf-title">env-clinic Workflow</title>
+  <desc id="wf-desc">Three-step lifecycle: Discover, Diagnose, and Remediate environment variables.</desc>
+  <defs>
+    <linearGradient id="wf-bg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#161b22"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="180" rx="16" fill="url(#wf-bg)"/>
+  <rect width="1200" height="180" rx="16" fill="none" stroke="#30363d" stroke-width="1.5"/>
+
+  <!-- Step 1: Discover -->
+  <g transform="translate(40, 30)">
+    <rect width="330" height="120" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+    <rect x="16" y="16" width="32" height="32" rx="8" fill="#1f6feb" fill-opacity="0.2" stroke="#58a6ff" stroke-width="1"/>
+    <text x="32" y="37" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="800" fill="#58a6ff" text-anchor="middle">1</text>
+
+    <text x="60" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#ffffff">DISCOVER</text>
+    <text x="16" y="74" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#8b949e">Auto-detects <tspan font-family="ui-monospace, monospace" fill="#e6edf3">.env</tspan> against</text>
+    <text x="16" y="96" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#8b949e"><tspan font-family="ui-monospace, monospace" fill="#e6edf3">.env.example</tspan> or sample templates.</text>
+  </g>
+
+  <!-- Arrow 1 to 2 -->
+  <g transform="translate(382, 75)">
+    <path d="M 0 15 L 24 15 M 18 8 L 26 15 L 18 22" fill="none" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Step 2: Diagnose -->
+  <g transform="translate(420, 30)">
+    <rect width="330" height="120" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+    <rect x="16" y="16" width="32" height="32" rx="8" fill="#9e6a03" fill-opacity="0.2" stroke="#d29922" stroke-width="1"/>
+    <text x="32" y="37" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="800" fill="#d29922" text-anchor="middle">2</text>
+
+    <text x="60" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#ffffff">DIAGNOSE</text>
+    <text x="16" y="74" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#8b949e">Reports <tspan font-family="ui-monospace, monospace" fill="#ff7b72">[FAIL]</tspan> missing, <tspan font-family="ui-monospace, monospace" fill="#d29922">[WARN]</tspan> extra,</text>
+    <text x="16" y="96" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#8b949e">and <tspan font-family="ui-monospace, monospace" fill="#d29922">[WARN]</tspan> empty variable states.</text>
+  </g>
+
+  <!-- Arrow 2 to 3 -->
+  <g transform="translate(762, 75)">
+    <path d="M 0 15 L 24 15 M 18 8 L 26 15 L 18 22" fill="none" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Step 3: Remediate -->
+  <g transform="translate(800, 30)">
+    <rect width="360" height="120" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+    <rect x="16" y="16" width="32" height="32" rx="8" fill="#238636" fill-opacity="0.2" stroke="#3fb950" stroke-width="1"/>
+    <text x="32" y="37" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="800" fill="#3fb950" text-anchor="middle">3</text>
+
+    <text x="60" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" fill="#ffffff">REMEDIATE</text>
+    <text x="16" y="74" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#8b949e">Fix interactively with <tspan font-family="ui-monospace, monospace" fill="#58a6ff">--fix</tspan> / <tspan font-family="ui-monospace, monospace" fill="#58a6ff">--prune</tspan>,</text>
+    <text x="16" y="96" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#8b949e">or enforce compliance in CI with <tspan font-family="ui-monospace, monospace" fill="#3fb950">--ci</tspan>.</text>
+  </g>
+</svg>
