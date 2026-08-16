@@ -6,11 +6,9 @@
   <p>Zero-config CLI to find missing, extra, and empty variables in your .env file.</p>
 
   <p>
-    <a href="https://www.npmjs.com/package/env-clinic"> <img src="https://img.shields.io/npm/v/env-clinic?color=blue" alt="npm version" /> </a>
-    <a href="https://www.npmjs.com/package/env-clinic"> <img src="https://img.shields.io/npm/dw/env-clinic?color=brightgreen" alt="weekly downloads" /> </a>
-    <a href="https://github.com/ChloeVPin/env-clinic/actions"> <img src="https://img.shields.io/github/actions/workflow/status/ChloeVPin/env-clinic/ci.yml?branch=master&label=CI" alt="CI Status" /> </a>
-    <a href="https://www.npmjs.com/package/env-clinic"> <img src="https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg" alt="node version" /> </a>
-    <a href="https://github.com/ChloeVPin/env-clinic/blob/master/LICENSE"> <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license" /> </a>
+    <a href="https://github.com/ChloeVPin/env-clinic/actions/workflows/ci.yml"><img src="https://github.com/ChloeVPin/env-clinic/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT license" /></a>
+    <a href="https://www.npmjs.com/package/env-clinic"><img src="https://img.shields.io/npm/v/env-clinic?logo=npm" alt="npm" /></a>
   </p>
 </div>
 
