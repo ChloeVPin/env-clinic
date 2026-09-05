@@ -1,114 +1,58 @@
-<div align="center">
-  <img src="assets/env-clinic.png" alt="env-clinic logo" width="144" />
+# env-clinic
 
-  <h1>env-clinic</h1>
+Compare a project's .env file with a reference file and report missing, extra, or empty variables. Reports contain variable names, not their values.
 
-  <p>Zero-config CLI to find missing, extra, and empty variables in your .env file.</p>
+## Start here
 
-  <p>
-    <a href="https://github.com/ChloeVPin/env-clinic/actions/workflows/ci.yml"><img src="https://github.com/ChloeVPin/env-clinic/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT license" /></a>
-    <a href="https://www.npmjs.com/package/env-clinic"><img src="https://img.shields.io/npm/v/env-clinic?logo=npm" alt="npm" /></a>
-  </p>
-</div>
+Requires Node.js 20 or newer. With no arguments, the CLI reads .env and the first reference file it finds: .env.example, .env.sample, then .env.template.
 
-## Why `env-clinic`?
-
-Deploying or starting an application with missing environment variables is one of the most common causes of runtime crashes. `env-clinic` compares your active `.env` file against `.env.example`, `.env.sample`, or `.env.template` and instantly audits for **missing**, **extra**, and **empty** variables.
-
-It is **zero config**, lightweight, and designed to run seamlessly in both local terminal environments and automated CI/CD pipelines.
-
-<br />
-
-<p align="center">
-  <img src="assets/readme/workflow.svg" width="100%" alt="env-clinic 3-step lifecycle: Discover, Diagnose, Remediate" />
-</p>
-
----
-
-## Quick Start
-
-Run `env-clinic` in your project root:
-
-```bash
+```sh
 npx env-clinic
 ```
 
-It automatically auto-detects `.env` against the first available reference file (`.env.example`, `.env.sample`, or `.env.template`).
+It checks presence and emptiness. It does not validate URLs, credentials, types, or whether a configured service can be reached.
 
-### Sample Terminal Output
+## Use in scripts
 
-```text
-  [PASS] DATABASE_URL        - present
-  [FAIL] STRIPE_SECRET_KEY   - MISSING (in example but not in .env)
-  [WARN] OLD_REDIS_URL       - EXTRA (in .env but not in example)
-  [WARN] DEBUG_MODE          - EMPTY (present but has no value)
-
-  Tip: run with --fix to fill these in interactively.
+```sh
+npx env-clinic --ci --strict
+npx env-clinic --file .env.production --example .env.example --json
 ```
 
----
+Exit status is 1 when a required variable is missing, a file cannot be read or parsed, or the command fails. strict also fails for empty required values. Extra variables are warnings. json emits present, missing, extra, empty, and passed.
 
-## Interactive Remediation (`--fix` & `--prune`)
+## Edit interactively
 
-`env-clinic` goes beyond reporting by offering interactive writing modes to fix your environment files directly:
-
-```bash
-# Fill in missing variables interactively with example suggestions
+```sh
 npx env-clinic --fix
-
-# Remove extra or orphaned variables interactively
 npx env-clinic --prune
 ```
 
-> **Safety Guarantee**: Write modes are strictly interactive and are safely rejected when executed with `--ci`, `--json`, or in non-interactive shell environments.
+Both modes require terminal input and output. They collect answers before writing, cancel on early end-of-input, and stop if the file changes while questions are open. fix appends missing assignments. prune removes confirmed assignments while preserving unrelated content and line endings.
 
----
+The parser accepts comments, export prefixes, single, double, and backtick quotes, and multiline quoted values. Variable references remain literal. A bare variable counts as empty, and the last assignment to a name wins.
 
-## Options & Reference Flags
+## Options
 
-| Flag | Description | Example |
-|---|---|---|
-| `--fix` | Interactively prompts to fill in missing variables using reference defaults as hints. | `npx env-clinic --fix` |
-| `--prune` | Interactively prompts to safely remove extra variables not present in the reference file. | `npx env-clinic --prune` |
-| `--ci` | Non-interactive plain text output for CI pipelines (exits with code `1` if missing). | `npx env-clinic --ci` |
-| `--strict` | Strict mode: treats empty variables as errors and fails CI. | `npx env-clinic --strict` |
-| `--quiet` | Suppress success logs; only display errors, warnings, and summary statistics. | `npx env-clinic --quiet` |
-| `--file` | Custom path to your target `.env` file. | `npx env-clinic --file .env.production` |
-| `--example` | Custom path to your reference template file. | `npx env-clinic --example .env.sample` |
-| `--json` | Output audit results formatted as JSON for downstream scripting and tooling. | `npx env-clinic --json` |
-| `--version` | Display current `env-clinic` version. | `npx env-clinic --version` |
-| `--help` | Display CLI usage help and options. | `npx env-clinic --help` |
+| Option | Behavior |
+| --- | --- |
+| --file <path> | Read this environment file instead of .env. |
+| --example <path> | Read this reference instead of searching. |
+| --ci | Compare without prompting. |
+| --json | Emit machine-readable results. |
+| --strict | Treat empty required values as errors. |
+| --quiet | Hide per-variable success lines. |
+| --fix | Prompt for missing variables. |
+| --prune | Prompt to remove extra variables. |
 
----
+## Development
 
-## CI/CD Pipeline Integration
-
-Enforce environment variable compliance in your GitHub Actions workflows or CI pipelines:
-
-```yaml
-- name: Check Environment Variables
-  run: npx env-clinic --ci
+```sh
+npm test
 ```
 
-`env-clinic` exits with `0` when environment variables match reference files, and exits with `1` if required variables are missing (or empty when `--strict` is enabled).
+See CONTRIBUTING.md and CHANGELOG.md.
 
----
+## License
 
-## Security & Privacy Guarantee
-
-`env-clinic` parses local `.env` keys solely to compare variable existence and detect empty values. **It does not print, log, store, or transmit secret values anywhere.**
-
----
-
-## Contributing
-
-`env-clinic` is a focused, community-driven tool. Bug reports and small improvements are welcome!
-
-- Found an issue? [Open a GitHub Issue](https://github.com/ChloeVPin/env-clinic/issues)
-- Local Development: `npm install` and `npm test`
-- Read the [Contributing Guide](CONTRIBUTING.md) and [Changelog](CHANGELOG.md)
-
----
-
-MIT License © 2026 ChloeVPin
+MIT. See LICENSE.
