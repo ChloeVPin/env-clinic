@@ -51,8 +51,8 @@ The parser accepts comments, export prefixes, single, double, and backtick quote
 npm test
 ```
 
-See CONTRIBUTING.md and CHANGELOG.md.
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-MIT. See LICENSE.
+MIT. See [LICENSE](LICENSE).
